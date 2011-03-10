@@ -1,0 +1,103 @@
+#jquery-ui-themeswitcher {
+}
+#jquery-ui-themeswitcher-icon {
+	float: right;
+	width: 16px;
+	height: 16px;
+	background: url("images/icon_color_arrow.gif") 50% 50% no-repeat;
+}
+#jquery-ui-themeswitcher-switcherpane {
+	position: absolute;
+	float: left;
+	font-family: "Trebuchet MS, Verdana, sans-serif"";
+	font-size: 12px;
+	background: #000;
+	color: #fff;
+	padding: 8px 3px 3px;
+	border: 1px solid #ccc;
+	-moz-border-radius-bottomleft: 6px;
+	-webkit-border-bottom-left-radius: 6px;
+	-moz-border-radius-bottomright: 6px;
+	-webkit-border-bottom-right-radius: 6px;
+	border-top: 0;
+	z-index: 999999;
+	width: 144px;
+	height:120px;
+}
+#jquery-ui-themeswitcher-switcherpane ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+	height: 120px;
+}
+#jquery-ui-themeswitcher-switcherpane li {
+	border-color:#111;
+	background: #000;
+	cursor: auto;
+	width: 120px;
+	height: ;
+	padding: 2px;
+	margin: 1px;
+	border: 1px solid #111;
+	-moz-border-radius: 4px;
+	clear: left;
+	text-align:center;
+	float: left;
+}
+#jquery-ui-themeswitcher-switcherpane li a {
+	color: #aaa;
+	text-decoration: none;
+	/*        float: left;*/
+	width: 100%;
+	outline: 0;
+	text-align:center;
+}
+#jquery-ui-themeswitcher-switcherpane li .themeName {
+	float: left;
+	margin: 3px 0;
+	display:block;
+	width:100%;
+}
+#jquery-ui-themeswitcher-switcherpane li a img {
+	/*        float: left;*/
+	border: 1px solid #333;
+	margin: 0 2px;
+}
+#jquery-ui-themeswitcher-switcherpane li:hover {
+	border-color:#555;
+	background: url("images/menuhoverbg.png") 50% 50% repeat-x;
+	cursor: pointer;
+}
+#jquery-ui-themeswitcher-button {
+	font-family: "Trebuchet MS, Verdana, sans-serif";
+	font-size: 11px;
+	color: #666;
+	background: #eee url("images/buttonbg.png") 50% 50% repeat-x;
+	border: 1px solid #ccc;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	text-decoration: none;
+	padding: 3px 3px 3px 8px;
+	width: 149px;
+	display: block;
+	height: 14px;
+	outline: 0;
+}
+#jquery-ui-themeswitcher-button:hover {
+	border-color:#bbb;
+	background: #f0f0f0;
+	cursor: pointer;
+	color: #444;
+}
+#jquery-ui-themeswitcher-button.active {
+	color: #aaa;
+	background: #000;
+	border: 1px solid #ccc;
+	border-bottom: 0px;
+	-moz-border-radius-bottomleft: 0;
+	-webkit-border-bottom-left-radius: 0;
+	-moz-border-radius-bottomright: 0;
+	-webkit-border-bottom-right-radius: 0;
+	outline: 0;
+}
