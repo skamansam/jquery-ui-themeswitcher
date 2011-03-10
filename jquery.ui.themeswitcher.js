@@ -1,4 +1,6 @@
-/* jQuery plugin themeswitcher
+/* jQuery UI ThemeSwitcher widget
+ * Rewriiten from jQuery themeswitchertool (http://jqueryui.com/docs/Theming/ThemeSwitcher)
+ * Rewrite by Samuel C. Tyler
 ---------------------------------------------------------------------*/
 
 ( function( $, undefined ) {
@@ -6,15 +8,15 @@ $.widget('ui.themeswitcher',{
 		options: {
 			loadTheme: null,
 			initialText: 'Switch Theme',
-			width: 150,
-			height: 200,
+			width: undefined,
+			height: undefined,
+			buttonHeight: 14,
 			buttonPreText: 'Theme: ',
 			closeOnSelect: true,
-			buttonHeight: 14,
 			cookieName: 'jquery-ui-theme',
-			onOpen: function() {},
-			onClose: function() {},
-			onSelect: function() {},
+			onOpen: function(obj) {},
+			onClose: function(obj) {},
+			onSelect: function(obj) {},
 			useStandard:true,
 			cssPrefix:"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/",
 			cssSuffix:"/jquery-ui.css",
@@ -23,11 +25,13 @@ $.widget('ui.themeswitcher',{
 			imageLocation:"/javascripts/jquery/themeswitcher/",
 			themes:{},
 			useCookie:true,
-			cookieOptions:{}
+			cookieOptions:{},
+			disableTheme:[],
+			selectOnStart:true
 		},
 		button:{},
 		switcherpane:{},
-		
+		hasStarted:false,
 		_create: function() {
 			this.namespace="jquery-ui-themeswitcher-";
 			this.switcherpaneID=this.namespace+'switcherpane';
@@ -51,6 +55,7 @@ $.widget('ui.themeswitcher',{
 			//create the list
 			var theme_ul=$("<ul></ul>");
 			for (var i in this.options.themes) {
+				if($.inArray(i,this.options.disableTheme)) continue;
 				css=this.options.themes[i].css || this.options.cssPrefix+i+this.options.cssSuffix;
 				img=this.options.themes[i].icon || this.options.imgPrefix+i.replace('-','_')+this.options.imgSuffix;
 				img=$("<img src='"+img+"' title='"+i+"' alt='"+img+"'/>");
@@ -66,13 +71,14 @@ $.widget('ui.themeswitcher',{
 			this.switcherpane=$('<div id="'+this.switcherpaneID+'"></div>').append($('<div id="themeGallery"></div>').append(theme_ul))
 				.appendTo($(this.element)).hide().css('width',this.button.width()+6)
 				.hover(function(){},function(){self.hideSwitcher()});
-			//console.log($.cookie(this.options.cookieName));
           if( this.options.useCookie && ($.cookie(this.options.cookieName) || this.options.loadTheme) ){
 	        this.themeName = $.cookie(this.options.cookieName) || this.options.loadTheme;
-    	    //console.log("using "+this.themeName);
     	    this.switcherpane.find('li:contains('+ this.themeName +')').trigger('click');
    		  }
 
+		},
+		destroy:function(){
+			this.element.children().remove();
 		},
 		refresh:function(){
 		},
@@ -84,7 +90,7 @@ $.widget('ui.themeswitcher',{
 	        if(this.options.useCookie){
 	        	 $.cookie(this.options.cookieName, this.themeName,this.options.cookieOptions);
 	        }
-	        this.options.onSelect(this);
+	        if(this.options.selectOnStart && this.hasStarted) this.options.onSelect(this);else this.hasStarted=true;
 	        if(this.options.closeOnSelect && this.switcherpane.is(':visible')){ this.hideSwitcher(); }
 	        return false;
 	 			

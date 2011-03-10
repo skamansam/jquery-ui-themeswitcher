@@ -22,8 +22,14 @@ FEATURES
   		jQuery.cookie plugin. The options are: expires, path, domain, secure
   - enhancement #4713. Added the useCookie option.
   - enhancement #4715. Added a useStandard option to specify whether to use the Gallery themes
+  - Ticket #4715 (new enhancement). Add a disableTheme[] option to specify which Gallery themes to disable.
+  - Ticket #4714 (new enhancement). Add option selectOnStart to dis/enable firing onSelect() at initialization
     
-FEATURES NOT IMPLEMENTED (Yet!)
-- Ticket #4715 (new enhancement). Add a disableTheme[] option to specify which Gallery themes to disable.
-- Ticket #4714 (new enhancement). Add an option to stop onSelect() from firing on startup
+FEATURES NOT IMPLEMENTED / BUGS NOT FIXED (Yet!)
 - Ticket #4196 (new feature). Add isThemeable option to allow theming of the widget itself.
+
+TODO:
+- Implement refresh() to refresh the list. Possibly addTheme() to append to list without refreshing the whole list
+- Implement option sort:true to sort list of themes by name
+- Implement position-based options: width, height, buttonHeight
+- Implement onSelect, onClose, onOpen and bind()-able events (using trigger())
