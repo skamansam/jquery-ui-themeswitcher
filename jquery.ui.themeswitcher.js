@@ -22,7 +22,8 @@ $.widget('ui.themeswitcher',{
 			imgSuffix:".png",
 			imageLocation:"/javascripts/jquery/themeswitcher/",
 			themes:{},
-			useCookie:true
+			useCookie:true,
+			cookieOptions:{}
 		},
 		button:{},
 		switcherpane:{},
@@ -58,7 +59,7 @@ $.widget('ui.themeswitcher',{
 				.bind('click', function(e){
 					self.themeName = $(this).find('.themeName').text();
 					self.updateCSS($(this).attr('title'));
-					self.options.onSelect();
+					self.options.onSelect(self);
 				});
 				theme_ul.append(li);
 			}
@@ -76,16 +77,14 @@ $.widget('ui.themeswitcher',{
 		refresh:function(){
 		},
 		updateCSS:function(locStr){
-			//console.log("Updating to "+locStr);
 			if(jQuery("head link#ui-theme").length==0)
 		        jQuery("head").append(jQuery('<link href="" type="text/css" rel="Stylesheet" id="ui-theme" />'));
 	        jQuery("head link#ui-theme").attr('href',locStr);
 		    $('#'+this.titleID).text( this.options.buttonPreText + this.themeName );
 	        if(this.options.useCookie){
-	        	 //console.log("Setting cookie to "+this.themeName);
-	        	 $.cookie(this.options.cookieName, this.themeName);
+	        	 $.cookie(this.options.cookieName, this.themeName,this.options.cookieOptions);
 	        }
-	        this.options.onSelect();
+	        this.options.onSelect(this);
 	        if(this.options.closeOnSelect && this.switcherpane.is(':visible')){ this.hideSwitcher(); }
 	        return false;
 	 			
@@ -98,11 +97,11 @@ $.widget('ui.themeswitcher',{
 		},
 		showSwitcher: function() {
 			$(this.switcherpane).slideDown();
-			this.options.onOpen();
+			this.options.onOpen(this);
 		},
 		hideSwitcher: function() {
 			$(this.switcherpane).slideUp();
-			this.options.onClose();
+			this.options.onClose(this);
 		},
 		addTheme:function(opts){
 			$.extend(this.options.themes,opts);

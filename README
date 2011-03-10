@@ -1,0 +1,29 @@
+jQuery.ui.ThemeSwitcher
+-by Skaman Sam Tyler <sam@rbe.homeip.net>
+
+ThemeSwitcher is a jQuery UI widget which displays a list of UI themes with previews. It is a rewrite of 
+the jQuery themeswitchertool found at http://jqueryui.com/docs/Theming/ThemeSwitcher.
+
+FEATURES
+- Uses the jQuery UI widget factory. This makes the tool an actual widget, instead of just a jQuery plugin.
+- Addresses several issues listed on the jQuery Trac:
+  - bug #6991. Since the tool is now a widget, it should be more friendly with other libraries that use 
+    the $ function. However, this has not been tested yet.
+  - bug #5548. Added the ability to specify themes not listed on the jQuery UI gallery (i.e. your own custom theme)
+  - enhancement #5306. Handlers for onClose(), onOpen(), and onSelect() now pass in a reference to the ThemeSwitcher
+    widget. You can access the theme name by:
+    	$('#mydiv').themeswitcher({
+    		onSelect:function(obj){
+    			themeName=obj.themeName;
+    			...
+    		}
+    	});
+  - enhancement #4868. Added the 'cookieOptions' option. This will allow you to pass options directly to the 
+  		jQuery.cookie plugin. The options are: expires, path, domain, secure
+  - enhancement #4713. Added the useCookie option.
+  - enhancement #4715. Added a useStandard option to specify whether to use the Gallery themes
+    
+FEATURES NOT IMPLEMENTED (Yet!)
+- Ticket #4715 (new enhancement). Add a disableTheme[] option to specify which Gallery themes to disable.
+- Ticket #4714 (new enhancement). Add an option to stop onSelect() from firing on startup
+- Ticket #4196 (new feature). Add isThemeable option to allow theming of the widget itself.
