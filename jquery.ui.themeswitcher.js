@@ -27,7 +27,8 @@ $.widget('ui.themeswitcher',{
 			useCookie:true,
 			cookieOptions:{},
 			disableTheme:[],
-			selectOnStart:true
+			selectOnStart:true,
+			isThemable:false
 		},
 		button:{},
 		switcherpane:{},
@@ -54,11 +55,12 @@ $.widget('ui.themeswitcher',{
 			
 			//create the list
 			var theme_ul=$("<ul></ul>");
+			
 			for (var i in this.options.themes) {
-				if($.inArray(i,this.options.disableTheme)) continue;
+				if( jQuery.inArray(i,this.options.disableTheme) != -1 ) continue;
 				css=this.options.themes[i].css || this.options.cssPrefix+i+this.options.cssSuffix;
 				img=this.options.themes[i].icon || this.options.imgPrefix+i.replace('-','_')+this.options.imgSuffix;
-				img=$("<img src='"+img+"' title='"+i+"' alt='"+img+"'/>");
+				img=$("<img class='"+(this.options.isThemable?"ui-widget ui-button":"")+"' src='"+img+"' title='"+i+"' alt='"+img+"'/>");
 				txt=$("<span class='themeName''>"+i+"</span>");
 				li=$('<li title="'+css+'"></li>').append(img).append(txt)
 				.bind('click', function(e){
@@ -70,12 +72,18 @@ $.widget('ui.themeswitcher',{
 			}
 			this.switcherpane=$('<div id="'+this.switcherpaneID+'"></div>').append($('<div id="themeGallery"></div>').append(theme_ul))
 				.appendTo($(this.element)).hide().css('width',this.button.width()+6)
-				.hover(function(){},function(){self.hideSwitcher()});
+				.mouseleave(function(){self.hideSwitcher()});
           if( this.options.useCookie && ($.cookie(this.options.cookieName) || this.options.loadTheme) ){
 	        this.themeName = $.cookie(this.options.cookieName) || this.options.loadTheme;
     	    this.switcherpane.find('li:contains('+ this.themeName +')').trigger('click');
    		  }
 
+		},
+		_getSortedHashKeys:function(hash){
+			var ret=[];
+			for(var key in hash) ret.push(key);
+			ret.sort();
+			return ret;
 		},
 		destroy:function(){
 			this.element.children().remove();
@@ -102,12 +110,16 @@ $.widget('ui.themeswitcher',{
 				this.showSwitcher();
 		},
 		showSwitcher: function() {
-			$(this.switcherpane).slideDown();
-			this.options.onOpen(this);
+			if(!$(this.switcherpane).is(':visible')){
+				$(this.switcherpane).slideDown();
+				this.options.onOpen(this);
+			}
 		},
 		hideSwitcher: function() {
-			$(this.switcherpane).slideUp();
-			this.options.onClose(this);
+			if($(this.switcherpane).is(':visible')){
+				$(this.switcherpane).slideUp();
+				this.options.onClose(this);
+			}
 		},
 		addTheme:function(opts){
 			$.extend(this.options.themes,opts);

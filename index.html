@@ -59,14 +59,28 @@
 					function() { $(this).addClass('ui-state-hover'); }, 
 					function() { $(this).removeClass('ui-state-hover'); }
 				);
-				ts=$('#theme-switcher').themeswitcher({
+				
+				$('#theme-switcher').themeswitcher({
 					themes:{
 						'My Theme':{
 							icon:'css/mytheme/mytheme.png',
 							css:'css/mytheme/jquery-ui-1.8.9.custom.css'
 						}
-					},imageLocation:"css/images/"});
+					},
+					imageLocation:"css/images/",
+					onSelect:function(){console.log('firing onSelect()')},
+					onOpen:function(){console.log('firing onOpen()')},
+					onClose:function(){console.log('firing onClose()')}
+				});
 			});
+			function makeItSo(obj){
+				console.log(obj);
+				txt=$(obj).parent().find('code').text();
+				console.log(txt);
+				$('#theme-switcher').remove();
+				$('<div id="theme-switcher"></div>').appendTo('body');
+				eval(txt);
+			}
 		</script>
 		<style type="text/css">
 			/*demo page css*/
@@ -77,9 +91,68 @@
 			ul#icons {margin: 0; padding: 0;}
 			ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
 			ul#icons span.ui-icon {float: left; margin: 0 4px;}
+			code{white-space:pre;}
+			#theme-switcher{position:fixed;top:10px;right:10px;}
 		</style>	
 	</head>
 	<body>
+		<h1>jQuery UI ThemeSwitcher Widget</h1>
+		<div>This is a demo page for the jQuery UI ThemeSwitcher Widget. Try it out!</div>
+		<div id="theme-switcher"></div>
+		
+<h2>Usage:</h2>		
+		<div>This is the default themeswitcher. 
+			<a href="javascript:void(0)" onclick="makeItSo(this)">Make it so!</a>
+			<code>
+	$('#theme-switcher').themeswitcher({
+		imageLocation:"css/images/"					
+	});
+			</code>
+		</div>
+		<div id="theme-switcher-custom"></div>
+		<div>This is the default themeswitcher with a custom theme defined. 
+			<a href="javascript:void(0)" onclick="makeItSo(this)">Make it so!</a>
+			<code>
+	$('#theme-switcher').themeswitcher({
+		themes:{
+			'My Theme':{
+				icon:'css/mytheme/mytheme.png',
+				css:'css/mytheme/jquery-ui-1.8.9.custom.css'
+			}
+		},
+		imageLocation:"css/images/"
+	});			</code>
+		</div>
+
+		<div>This is the default themeswitcher with only a custom theme defined. 
+			<a href="javascript:void(0)" onclick="makeItSo(this)">Make it so!</a>
+			<code>
+	$('#theme-switcher').themeswitcher({
+		themes:{
+			'My Theme':{
+				icon:'css/mytheme/mytheme.png',
+				css:'css/mytheme/jquery-ui-1.8.9.custom.css'
+			}
+		},
+		imageLocation:"css/images/",
+		useStandard:false
+	});			</code>
+		</div>
+
+
+		<div>This is the default themeswitcher with callbacks for the events.
+			<a href="javascript:void(0)" onclick="makeItSo(this)">Make it so!</a>
+			<code>
+	$('#theme-switcher').themeswitcher({
+		imageLocation:"css/images/",
+		onSelect:function(){alert('firing onSelect()')},
+		onOpen:function(){alert('firing onOpen()')},
+		onClose:function(){alert('firing onClose()')}
+	});
+			</code>
+		</div>
+
+		<div id="theme-switcher-"></div>
 		<div id="theme-switcher"></div>
 	<h1>Welcome to jQuery UI!</h1>
 	<p style="font-size: 1.3em; line-height: 1.5; margin: 1em 0; width: 50%;">This page demonstrates the widgets you downloaded using the theme you selected in the download builder. We've included and linked to minified versions of <a href="js/jquery-1.4.4.min.js">jQuery</a>, your personalized copy of <a href="js/jquery-ui-1.8.9.custom.min.js">jQuery UI (js/jquery-ui-1.8.9.custom.min.js)</a>, and <a href="css/mdlogix/jquery-ui-1.8.9.custom.css">css/mdlogix/jquery-ui-1.8.9.custom.css</a> which imports the entire jQuery UI CSS Framework. You can choose to link a subset of the CSS Framework depending on your needs. </p>
