@@ -198,6 +198,35 @@ $('#theme-switcher').themeswitcher({
 });			</code>
 		</div>
 
+		<div>Custom theme, ignoring several Gallery Themes 
+			<a href="javascript:void(0)" onclick="makeItSo(this)">Make it so!</a>
+			<code>
+$('#theme-switcher').themeswitcher({
+	themes:{
+		'My Theme':{
+			icon:'css/mytheme/mytheme.png',
+			css:'css/mytheme/jquery-ui-1.8.9.custom.css'
+		}
+	},
+	imageLocation:"css/images/",
+	disableThemes:['ui-lightness','base','le-frog']
+});			</code>
+		</div>
+		
+		<div>Custom theme, only using several Gallery Themes 
+			<a href="javascript:void(0)" onclick="makeItSo(this)">Make it so!</a>
+			<code>
+$('#theme-switcher').themeswitcher({
+	themes:{
+		'My Theme':{
+			icon:'css/mytheme/mytheme.png',
+			css:'css/mytheme/jquery-ui-1.8.9.custom.css'
+		}
+	},
+	imageLocation:"css/images/",
+	enableThemes:['ui-lightness','base','le-frog']
+});			</code>
+		</div>
 
 		<div>This is the default themeswitcher with callbacks for the events.
 			<a href="javascript:void(0)" onclick="makeItSo(this)">Make it so!</a>

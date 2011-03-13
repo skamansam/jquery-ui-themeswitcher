@@ -27,7 +27,8 @@ $.widget('ui.themeswitcher',{
 			themes:{},
 			useCookie:true,
 			cookieOptions:{},
-			disableTheme:[],
+			disableThemes:[],
+			enableThemes:[],
 			selectOnStart:true,
 			isThemable:false,
 			autoDetect:true
@@ -56,7 +57,8 @@ $.widget('ui.themeswitcher',{
 			
 			for (var i in this.options.themes) {
 
-				if( jQuery.inArray(i,this.options.disableTheme) != -1 ) continue;	//skip if disabled
+				if( jQuery.inArray(i,this.options.disableThemes) != -1 ) continue;	//skip if disabled
+				if( this.options.enableThemes.length!=0 && jQuery.inArray(i,this.options.enableThemes) == -1 ) continue;	//skip if disabled
 
 				css=this.options.themes[i].css || this.options.cssPrefix+i+this.options.cssSuffix;
 				img=this.options.themes[i].icon || this.options.imgPrefix+i.replace('-','_')+this.options.imgSuffix;
