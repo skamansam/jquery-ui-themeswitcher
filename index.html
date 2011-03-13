@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<title>jQuery UI Example Page</title>
+		<title>jQuery ThemeSwitcher Demo</title>
 		<link type="text/css" id="ui-theme" href="css/mytheme/jquery-ui-1.8.9.custom.css" rel="stylesheet" />	
 		<link type="text/css" href="css/jquery.ui.themeswitcher.css" rel="stylesheet" />	
 		<script type="text/javascript" src="lib/jquery-1.5.min.js"></script>
@@ -233,11 +233,13 @@ $('#theme-switcher').themeswitcher({
 			<code>
 	$('#theme-switcher').themeswitcher({
 		imageLocation:"css/images/",
-		onSelect:function(){alert('firing onSelect()')},
-		onOpen:function(){alert('firing onOpen()')},
-		onClose:function(){alert('firing onClose()')}
+		onSelect:function(obj){$('#eventLog').append('&lt;br/&gt;onSelect() fired: '+obj.themeName)},
+		onOpen:function(obj){$('#eventLog').append('&lt;br/&gt;onOpen() fired: '+obj.themeName)},
+		onClose:function(obj){$('#eventLog').append('&lt;br/&gt;onClose() fired: '+obj.themeName)}
 	});
 			</code>
+			eventLog:
+			<div id="eventLog"></div>
 		</div>
 <!--	<h1>Welcome to jQuery UI!</h1>
 	<p style="font-size: 1.3em; line-height: 1.5; margin: 1em 0; width: 50%;">This page demonstrates the widgets you downloaded using the theme you selected in the download builder. We've included and linked to minified versions of <a href="js/jquery-1.4.4.min.js">jQuery</a>, your personalized copy of <a href="js/jquery-ui-1.8.9.custom.min.js">jQuery UI (js/jquery-ui-1.8.9.custom.min.js)</a>, and <a href="css/mdlogix/jquery-ui-1.8.9.custom.css">css/mdlogix/jquery-ui-1.8.9.custom.css</a> which imports the entire jQuery UI CSS Framework. You can choose to link a subset of the CSS Framework depending on your needs. </p>

@@ -34,6 +34,7 @@ TODO
 - Implement `refresh()` to refresh the list. Possibly `addTheme()` to append to list without refreshing the whole list
 - Implement option `sort:true` to sort list of themes by name
 - Implement `onSelect`, `onClose`, `onOpen` as `bind()`-able events (using `trigger()`)
+- FIXME/BUG: onClose() event fires twice after first selection.
 
 Examples
 --------
@@ -90,6 +91,15 @@ Examples
 		enableThemes:['My Theme','ui-lightness','base','le-frog']
 	});`
 
+*Add Custom callbacks*
+	$('#theme-switcher').themeswitcher({
+		imageLocation:"css/images/",
+		onSelect:function(obj){$('#eventLog').append('&lt;br/&gt;onSelect() fired: '+obj.themeName)},
+		onOpen:function(obj){$('#eventLog').append('&lt;br/&gt;onOpen() fired: '+obj.themeName)},
+		onClose:function(obj){$('#eventLog').append('&lt;br/&gt;onClose() fired: '+obj.themeName)}
+	});
+	eventLog:
+	&lt;div id="eventLog"&gt;&lt;/div&gt;
 
 Options
 --------
