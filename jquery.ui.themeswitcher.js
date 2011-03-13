@@ -1,6 +1,6 @@
 /* jQuery UI ThemeSwitcher widget
- * Rewriiten from jQuery themeswitchertool (http://jqueryui.com/docs/Theming/ThemeSwitcher)
- * Rewrite by Samuel C. Tyler
+ * Rewritten from jQuery themeswitchertool (http://jqueryui.com/docs/Theming/ThemeSwitcher)
+ * Rewrite by Samuel C. Tyler <sam@rbe.homeip.net>
 ---------------------------------------------------------------------*/
 
 ( function( $, undefined ) {
@@ -8,9 +8,10 @@ $.widget('ui.themeswitcher',{
 		options: {
 			loadTheme: null,
 			initialText: 'Switch Theme',
-			width: undefined,
-			height: undefined,
-			buttonHeight: 14,
+			width: null,
+			height: null,
+			pHeight:null,
+			pWidth:null,
 			buttonPreText: 'Theme: ',
 			closeOnSelect: true,
 			cookieName: 'jquery-ui-theme',
@@ -28,31 +29,28 @@ $.widget('ui.themeswitcher',{
 			cookieOptions:{},
 			disableTheme:[],
 			selectOnStart:true,
-			isThemable:false
+			isThemable:false,
+			autoDetect:true
 		},
 		button:{},
 		switcherpane:{},
 		hasStarted:false,
 		_create: function() {
-			this.namespace="jquery-ui-themeswitcher-";
-			this.switcherpaneID=this.namespace+'switcherpane';
-			this.buttonID=this.namespace+'button';
-			this.iconID=this.namespace+'icon';
-			this.titleID=this.namespace+'title';			
-			
 			if(this.options.useStandard)
 				this.addTheme(this.getStandard());
 			
 			window.themeswitcher=$(this);
 			
 			var self=this;
-			this.button = $('<a href="#" id="'+this.buttonID+'">'+
-					'<span id="'+this.iconID+'"></span>'+
-					'<span id="'+this.titleID+'">'+ this.options.initialText +'</span></a>')
+			this.button = $('<a href="#" class="jquery-ui-themeswitcher-button"></a>')
 					.appendTo($(this.element))
-					.data('ts_obj',this)
 					.bind('click.'+this.widgetName, function(e){self.toggleSwitcher(e,self)});
+			this.icon=$('<span class="jquery-ui-themeswitcher-button-icon"></span>').appendTo($(this.button));
+			this.buttontext=$('<span class="jquery-ui-themeswitcher-button-text">'+ this.options.initialText +'</span></a>')
+					.appendTo($(this.button));
 			
+			$(this.element).mouseleave(function(){self.hideSwitcher()});
+
 			//create the list
 			var theme_ul=$("<ul></ul>");
 			
@@ -60,9 +58,14 @@ $.widget('ui.themeswitcher',{
 				if( jQuery.inArray(i,this.options.disableTheme) != -1 ) continue;
 				css=this.options.themes[i].css || this.options.cssPrefix+i+this.options.cssSuffix;
 				img=this.options.themes[i].icon || this.options.imgPrefix+i.replace('-','_')+this.options.imgSuffix;
-				img=$("<img class='"+(this.options.isThemable?"ui-widget ui-button":"")+"' src='"+img+"' title='"+i+"' alt='"+img+"'/>");
-				txt=$("<span class='themeName''>"+i+"</span>");
+				img=$("<img src='"+img+"' title='"+i+"' alt='"+img+"'/>");
+				txt=$("<span class='themeName'>"+i+"</span>");
 				li=$('<li title="'+css+'"></li>').append(img).append(txt)
+				.hover(function(){
+					$(this).addClass(self.options.isThemable?'ui-state-hover':'hover')
+				},function(){
+					$(this).removeClass(self.options.isThemable?'ui-state-hover':'hover')
+				})
 				.bind('click', function(e){
 					self.themeName = $(this).find('.themeName').text();
 					self.updateCSS($(this).attr('title'));
@@ -70,14 +73,52 @@ $.widget('ui.themeswitcher',{
 				});
 				theme_ul.append(li);
 			}
-			this.switcherpane=$('<div id="'+this.switcherpaneID+'"></div>').append($('<div id="themeGallery"></div>').append(theme_ul))
-				.appendTo($(this.element)).hide().css('width',this.button.width()+6)
-				.mouseleave(function(){self.hideSwitcher()});
-          if( this.options.useCookie && ($.cookie(this.options.cookieName) || this.options.loadTheme) ){
-	        this.themeName = $.cookie(this.options.cookieName) || this.options.loadTheme;
-    	    this.switcherpane.find('li:contains('+ this.themeName +')').trigger('click');
-   		  }
+			this.switcherpane=$('<div class="jquery-ui-themeswitcher-switcherpane"></div>')
+				.append(theme_ul)
+				.appendTo($(this.element)).hide();
+			
+			//set the dimensions
+			if(this.options.width) $(this.button).css("width",''+this.options.width+'px');
+			if(this.options.height) $(this.button).css("width",''+this.options.height+'px');
+			if(this.options.pWidth) $(this.switcherpane).css("width",this.options.pWidth+'px');
+			if(this.options.pHeight) $(this.switcherpane).css("width",this.options.pWeight+'px');
+			
+			//change classes if themable
+			if(!this.options.isThemable){
+				$(this.element).addClass('notheme');
+			}else{
+				$(this.button).addClass('ui-button ui-widget ui-state-default ui-corner-all');
+				$(this.icon).addClass('ui-icon ui-icon-triangle-1-s');
+				$(this.switcherpane).addClass('ui-tabs-panel ui-widget-content ui-corner-bottom');
+				$(this.switcherpane).find('li').addClass('ui-button ui-widget ui-state-default');
+			}
 
+			//handle cookies
+			if( this.options.useCookie && ($.cookie(this.options.cookieName) || this.options.loadTheme) ){
+				this.themeName = $.cookie(this.options.cookieName) || this.options.loadTheme;
+				this.switcherpane.find('li:contains('+ this.themeName +')').trigger('click');
+			}
+			
+			//auto-detection of current theme
+			if(!this.options.loadTheme && this.options.autoDetect)
+				this._detectTheme();
+
+		},
+		_detectTheme:function(){
+			var self=this;
+			var links=[];
+			$('head link').each(function(){
+				links.push($(this).attr('href'));
+			});
+			console.log(links);
+			console.log(this.switcherpane);
+			$(this.switcherpane).find('li').each(function(){
+					if($.inArray($(this).attr('title'),links)>=0){
+						self.themeName=$(this).children('.themeName').text();
+					}
+			});
+			if(this.themeName)
+				$(this.buttontext).text( this.options.buttonPreText + this.themeName );
 		},
 		_getSortedHashKeys:function(hash){
 			var ret=[];
@@ -94,12 +135,12 @@ $.widget('ui.themeswitcher',{
 			if(jQuery("head link#ui-theme").length==0)
 		        jQuery("head").append(jQuery('<link href="" type="text/css" rel="Stylesheet" id="ui-theme" />'));
 	        jQuery("head link#ui-theme").attr('href',locStr);
-		    $('#'+this.titleID).text( this.options.buttonPreText + this.themeName );
+		    $(this.buttontext).text( this.options.buttonPreText + this.themeName );
 	        if(this.options.useCookie){
 	        	 $.cookie(this.options.cookieName, this.themeName,this.options.cookieOptions);
 	        }
 	        if(this.options.selectOnStart && this.hasStarted) this.options.onSelect(this);else this.hasStarted=true;
-	        if(this.options.closeOnSelect && this.switcherpane.is(':visible')){ this.hideSwitcher(); }
+	        if(this.options.closeOnSelect){ this.hideSwitcher(); }
 	        return false;
 	 			
 		},
@@ -111,12 +152,14 @@ $.widget('ui.themeswitcher',{
 		},
 		showSwitcher: function() {
 			if(!$(this.switcherpane).is(':visible')){
+				$(this.button).addClass('active');
 				$(this.switcherpane).slideDown();
 				this.options.onOpen(this);
 			}
 		},
 		hideSwitcher: function() {
 			if($(this.switcherpane).is(':visible')){
+				$(this.button).removeClass('active');
 				$(this.switcherpane).slideUp();
 				this.options.onClose(this);
 			}
