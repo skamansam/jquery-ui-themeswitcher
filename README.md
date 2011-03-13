@@ -1,4 +1,5 @@
 jQuery.ui.ThemeSwitcher
+
 -by Skaman Sam Tyler <sam@rbe.homeip.net>
 
 ThemeSwitcher is a jQuery UI widget which displays a list of UI themes with previews. It is a rewrite of 
@@ -12,7 +13,7 @@ FEATURES / CHANGES
   - bug #6991. Since the tool is now a widget, it should be more friendly with other libraries that use 
     the $ function. However, this has not been tested yet.
   - bug #5548. Added the ability to specify themes not listed on the jQuery UI gallery (i.e. your own custom theme)
-  - enhancement #5306. Handlers for onClose(), onOpen(), and onSelect() now pass in a reference to the ThemeSwitcher
+  - enhancement #5306. Handlers for `onClose()`, `onOpen()`, and `onSelect()` now pass in a reference to the ThemeSwitcher
     widget. 
   - enhancement #4868. Added the 'cookieOptions' option. This will allow you to pass options directly to the 
   		jQuery.cookie plugin. The options are: expires, path, domain, secure

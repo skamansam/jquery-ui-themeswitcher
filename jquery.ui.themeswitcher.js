@@ -55,7 +55,9 @@ $.widget('ui.themeswitcher',{
 			var theme_ul=$("<ul></ul>");
 			
 			for (var i in this.options.themes) {
-				if( jQuery.inArray(i,this.options.disableTheme) != -1 ) continue;
+
+				if( jQuery.inArray(i,this.options.disableTheme) != -1 ) continue;	//skip if disabled
+
 				css=this.options.themes[i].css || this.options.cssPrefix+i+this.options.cssSuffix;
 				img=this.options.themes[i].icon || this.options.imgPrefix+i.replace('-','_')+this.options.imgSuffix;
 				img=$("<img src='"+img+"' title='"+i+"' alt='"+img+"'/>");
@@ -73,6 +75,8 @@ $.widget('ui.themeswitcher',{
 				});
 				theme_ul.append(li);
 			}
+			
+			//create the pane which holds the items
 			this.switcherpane=$('<div class="jquery-ui-themeswitcher-switcherpane"></div>')
 				.append(theme_ul)
 				.appendTo($(this.element)).hide();
