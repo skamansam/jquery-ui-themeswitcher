@@ -1,7 +1,7 @@
 jQuery.ui.ThemeSwitcher
-========================
+======================
 by Skaman Sam Tyler <sam@rbe.homeip.net>
-----------------------------------------
+---------------------------------------
 based on themeswitchertool by Jason Lau
 ---------------------------------------
 
