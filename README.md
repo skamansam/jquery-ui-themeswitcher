@@ -1,8 +1,9 @@
 jQuery.ui.ThemeSwitcher
 ========================
 by Skaman Sam Tyler <sam@rbe.homeip.net>
-based on themeswitchertool by Jason Lau
 ----------------------------------------
+based on themeswitchertool by Jason Lau
+---------------------------------------
 
 ThemeSwitcher is a jQuery UI widget which displays a list of UI themes with previews. It is a rewrite of 
 the jQuery themeswitchertool found at http://jqueryui.com/docs/Theming/ThemeSwitcher.
