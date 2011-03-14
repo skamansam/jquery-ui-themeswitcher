@@ -60,7 +60,7 @@
 					function() { $(this).removeClass('ui-state-hover'); }
 				);
 				
-				$('#theme-switcher').themeswitcher({
+				var t=$('#theme-switcher').themeswitcher({
 					isThemable:true,
 					themes:{
 						'My Theme':{
@@ -68,12 +68,15 @@
 							css:'css/mytheme/jquery-ui-1.8.9.custom.css'
 						}
 					},
+					loadTheme:'base',
+					selectOnStart:false,
 					imageLocation:"css/images/",
-					onSelect:function(){console.log('firing onSelect()')},
-					onOpen:function(){console.log('firing onOpen()')},
-					onClose:function(){console.log('firing onClose()')}
+					onSelect:function(evt,obj){$('#eventLog').append('&lt;br/&gt;onSelect() fired: '+obj.themeName)},
+					onOpen:function(evt,obj){$('#eventLog').append('&lt;br/&gt;onOpen() fired: '+obj.themeName)},
+					onClose:function(evt,obj){$('#eventLog').append('&lt;br/&gt;onClose() fired: '+obj.themeName)}
 				});
-			$('code').attr('contenteditable','true');
+				$('code').attr('contenteditable','true');
+	
 			});
 			function makeItSo(obj){
 				txt=$(obj).parent().find('code').text();

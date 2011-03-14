@@ -40,9 +40,14 @@ $.widget('ui.themeswitcher',{
 			if(this.options.useStandard)
 				this.addTheme(this.getStandard());
 			
-			window.themeswitcher=$(this);
-			
 			var self=this;
+			
+			
+			//bind events
+			$(this).bind('open',function(evt){this.options.onOpen(evt,self)});
+			$(this).bind('close',function(evt){this.options.onClose(evt,self)});
+			$(this).bind('select',function(evt){this.options.onSelect(evt,self)});
+
 			this.button = $('<a href="#" class="jquery-ui-themeswitcher-button"></a>')
 					.appendTo($(this.element))
 					.bind('click.'+this.widgetName, function(e){self.toggleSwitcher(e,self)});
@@ -73,7 +78,7 @@ $.widget('ui.themeswitcher',{
 				.bind('click', function(e){
 					self.themeName = $(this).find('.themeName').text();
 					self.updateCSS($(this).attr('title'));
-					self.options.onSelect(self);
+					//self.trigger('select');
 				});
 				theme_ul.append(li);
 			}
@@ -116,15 +121,25 @@ $.widget('ui.themeswitcher',{
 			$('head link').each(function(){
 				links.push($(this).attr('href'));
 			});
-			console.log(links);
-			console.log(this.switcherpane);
 			$(this.switcherpane).find('li').each(function(){
 					if($.inArray($(this).attr('title'),links)>=0){
 						self.themeName=$(this).children('.themeName').text();
+						self._handleSelect();
 					}
 			});
 			if(this.themeName)
 				$(this.buttontext).text( this.options.buttonPreText + this.themeName );
+				
+			
+		},
+		_handleSelect:function(){
+       		console.log('_handleSelect()');
+			if(!this.options.selectOnStart && this.hasStarted)
+				$(this).trigger('select',this);
+			else
+				this.hasStarted=true;
+			if(this.options.selectOnStart)
+				$(this).trigger('select',this);
 		},
 		_getSortedHashKeys:function(hash){
 			var ret=[];
@@ -142,11 +157,15 @@ $.widget('ui.themeswitcher',{
 		        jQuery("head").append(jQuery('<link href="" type="text/css" rel="Stylesheet" id="ui-theme" />'));
 	        jQuery("head link#ui-theme").attr('href',locStr);
 		    $(this.buttontext).text( this.options.buttonPreText + this.themeName );
-	        if(this.options.useCookie){
+	        
+	        if(this.options.useCookie)
 	        	 $.cookie(this.options.cookieName, this.themeName,this.options.cookieOptions);
-	        }
-	        if(this.options.selectOnStart && this.hasStarted) this.options.onSelect(this);else this.hasStarted=true;
-	        if(this.options.closeOnSelect){ this.hideSwitcher(); }
+	        
+			this._handleSelect();
+
+	        if(this.options.closeOnSelect)
+	        	this.hideSwitcher();
+	        
 	        return false;
 	 			
 		},
@@ -160,14 +179,14 @@ $.widget('ui.themeswitcher',{
 			if(!$(this.switcherpane).is(':visible')){
 				$(this.button).addClass('active');
 				$(this.switcherpane).slideDown();
-				this.options.onOpen(this);
+				$(this).trigger('open',this);
 			}
 		},
 		hideSwitcher: function() {
 			if($(this.switcherpane).is(':visible')){
 				$(this.button).removeClass('active');
 				$(this.switcherpane).slideUp();
-				this.options.onClose(this);
+				$(this).trigger('close',this);
 			}
 		},
 		addTheme:function(opts){
@@ -189,8 +208,8 @@ $.widget('ui.themeswitcher',{
 				'ui-lightness':{icon:this.options.imgPrefix+"ui_light"+this.options.imgSuffix,css:this.options.cssPrefix+"ui-light"+this.options.cssSuffix}
 			}
 		}//getStandard
-}
-);}( jQuery ) );
+})
+})( jQuery );
 
 
 /**

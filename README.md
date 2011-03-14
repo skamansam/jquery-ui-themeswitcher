@@ -17,6 +17,7 @@ Features / Changes
  - Enable/Disable certain themes. See `enableThemes[]` and `disableThemes[]` options
  - Enabled custom theme support.
  - Addresses all the issues listed on the jQuery Trac which relate to the themeswitchertool (see Bugs Fixed)
+ - Tested in Chrome 10+, Opera 10+, Firefox 3.6+
 
 Bugs Fixed
 ----------
@@ -34,8 +35,8 @@ TODO
 -----
 - Implement `refresh()` to refresh the list. Possibly `addTheme()` to append to list without refreshing the whole list
 - Implement option `sort:true` to sort list of themes by name
-- Implement `onSelect`, `onClose`, `onOpen` as `bind()`-able events (using `trigger()`)
-- FIXME/BUG: onClose() event fires twice after first selection.
+- Test in IE6+ and on non-Linux machines
+- Figure out why `onSelect`, `onClose`, `onOpen` cannot use `bind()` (already uses `trigger()`)
 
 Examples
 --------
@@ -125,10 +126,10 @@ Whether to close the chooser when an itme is selected.
 `cookieName: 'jquery-ui-theme'`
 The name of the cookie when using cookies
 
-`onOpen: function(obj) {}`, `onClose: function(obj) {}`
+`onOpen: function(event,obj) {}`, `onClose: function(event,obj) {}`
 The function to call when the selector is open/closed. The themeswitcher object is passed to it.
 
-`onSelect: function(obj) {}`
+`onSelect: function(event,obj) {}`
 The function to call when a theme is selected. The themeswitcher object is passed to it.
 
 `useStandard: true`
