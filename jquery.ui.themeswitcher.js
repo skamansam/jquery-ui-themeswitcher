@@ -133,8 +133,7 @@ $.widget('ui.themeswitcher',{
 			
 		},
 		_handleSelect:function(){
-       		console.log('_handleSelect()');
-			if(!this.options.selectOnStart && this.hasStarted)
+ 			if(!this.options.selectOnStart && this.hasStarted)
 				$(this).trigger('select',this);
 			else
 				this.hasStarted=true;
