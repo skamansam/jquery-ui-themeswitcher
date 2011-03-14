@@ -173,6 +173,3 @@ Whether or not to use jQuery UI themes for the switcher. If enabled, it will loo
 `autoDetect: true`
 Whether to auto-detect which theme is currently active. Only used during initialization and if loadTheme is not set.
 	
-
-Examples
---------
